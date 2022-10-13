@@ -10,6 +10,14 @@ const read_file = () => {
     }
 };
 
+const write_data = (data) => {
+    fs.writeFile("test.json", JSON.stringify(data), err => {
+        // Checking for errors
+        if (err) throw err;
+        console.log("List Updated"); // 
+    });
+};
+
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -34,12 +42,24 @@ var main = function () {
                 break;
             case "2":
                 console.log("==========================");
-                rl.question("add?  ", function (added_item) {
-                    console.log(added_item);
+                rl.question("Which task would you like to add?\n", function (added_item) {
+                    task = task();
+                    task["name"] = added_item;
+                    let updated_list = read_file();
+                    updated_list.push(task);
+                    write_data(updated_list);
                     rl.close();
                 });
                 break;
             case "3":
+                const items_delete = read_file();
+                console.log("\n");
+                let count = 1;
+                items_delete.forEach(item => {
+                    console.log(`${count} - ${item.name}`);
+                    count++;
+                });
+                console.log("\n");
                 break;
             case "4":
                 break;
